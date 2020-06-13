@@ -6,7 +6,7 @@ var bodyParser  = require('body-parser');
 var SavePassword = 'tutorials-raspberrypi.de';
 
 var connection =mysql.createConnection({
-    host     : process.env.DBHOST 
+    host     : process.env.DBHOST, 
     user     : process.env.DBUSER,
     password : process.env.DBPASSWORD,
     database : 'weather_station',
