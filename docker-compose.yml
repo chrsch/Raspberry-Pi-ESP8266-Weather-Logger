@@ -1,0 +1,37 @@
+version: "3.3"
+  
+services:
+  node_app:
+    build:
+      context: node_app
+      dockerfile: Dockerfile
+    user: "node"
+    working_dir: /home/node/app
+    environment:
+      - NODE_ENV=production
+      - DBHOST=db
+      - DBUSER=weather_station
+      - DBPASSWORD=${MYSQL_PASSWORD}
+      - TZ=Europe/Berlin
+    ports:
+      - 8000:8000
+    depends_on:
+      - db
+    command: "npm start"
+  db:
+    image: linuxserver/mariadb:arm32v7-latest
+    volumes:
+      - db_volume:/var/lib/mysql
+      - ./resources/sql/init.sql:/config/initdb.d/init.sql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_USER=weather_station
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+      - MYSQL_DATABASE=weather_station
+      - TZ=Europe/Berlin
+    ports:
+      - 3306:3306
+
+volumes:
+  db_volume:
+
